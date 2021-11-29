@@ -203,6 +203,6 @@ function updateBulkVisibility(){
  */
 function sortReportData(){
   ControlSheet.getRange(3, 1, ControlSheet.getLastRow() - 3, 3)
-              .sort({column:2, ascending:false})
+              .sort({column:2, ascending:true})
   ControlSheet.getRange(2, 3, ControlSheet.getLastRow() - 2, 1).clearContent()
 }
