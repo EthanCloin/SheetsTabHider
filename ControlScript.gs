@@ -1,9 +1,66 @@
 //GLOBAL REFERENCES
 const SS = SpreadsheetApp.getActiveSpreadsheet();
-const ControlSheet = SS.getSheetByName("SheetHider");
+const ControlSheetName = "TabHider"
+let ControlSheet = SS.getSheetByName(ControlSheetName);
 const ctrlMap = {
   sheetName:0, status:1, command:2
 }
+
+/**
+ * creates the TabHider sheet with proper validation and conditional formatting
+ */
+function initializeSpreadsheet(){
+  
+  const GREY = "#d9d9d9"
+  const GREEN = "#b6d7a8"
+    SS.insertSheet(ControlSheetName)
+
+    // HEADERS
+    let controlSheet = SS.getActiveSheet()
+    let headerRange = controlSheet.getRange(1, 1, 1, 4)
+    
+    // COMMAND VALIDATION
+    let commandValidationRule = SpreadsheetApp.newDataValidation()
+        .requireValueInList(["HIDE", "REVEAL"])
+        .setAllowInvalid(false)
+        .build()
+    
+    // BULK COMMAND VALIDATION
+    let bulkCommandValidationRule = SpreadsheetApp.newDataValidation()
+        .requireValueInList(["HIDE ALL", "REVEAL ALL"])
+        .setAllowInvalid(false)
+        .build()
+    
+    // CONDITIONAL FORMATTING
+    let cfRange = controlSheet.getRange("B2:B1000")
+    let highlightHiddenGreyRule = SpreadsheetApp.newConditionalFormatRule()
+        .whenTextEqualTo("Hidden")
+        .setBackground(GREY)
+        .setRanges([cfRange])
+        .build();
+
+    let highlightRevealedGreenRule = SpreadsheetApp.newConditionalFormatRule()
+        .whenTextEqualTo("Revealed")
+        .setBackground(GREEN)
+        .setRanges([cfRange])
+        .build()
+    
+    // APPLY
+    headerRange.setValues([
+      ["SheetName", "Status", "Command", "Bulk Command"]
+      ])
+    controlSheet.setConditionalFormatRules([highlightHiddenGreyRule, highlightRevealedGreenRule])
+    controlSheet.getRange(2, 4).setDataValidation(bulkCommandValidationRule)
+    let lastRow = 100
+    lastRow = (controlSheet.getLastRow()-1 < 100 ? lastRow : controlSheet.getLastRow()-1)
+    controlSheet.getRange(2, 3, lastRow, 1).setDataValidation(commandValidationRule)
+
+    ControlSheet = controlSheet
+    Logger.log("did it")
+    refreshReportData()
+    setControlReport()
+  }
+
 
 /**
  * Object containing a list of sheetNames, and booleans representing hiddenStatus
@@ -149,6 +206,3 @@ function sortReportData(){
               .sort({column:2, ascending:false})
   ControlSheet.getRange(2, 3, ControlSheet.getLastRow() - 2, 1).clearContent()
 }
-
-
-
