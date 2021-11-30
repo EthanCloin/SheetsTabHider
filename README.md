@@ -10,7 +10,7 @@ SheetsTabHider is written as a "container-bound" Google Apps Script project. Thi
 ### Open the Apps Script Editor
 In any Spreadsheet, navigate to the Apps Script Editor inside the Extensions menu. 
 
-<img src="https://drive.google.com/uc?export=view&id=10P0UfuGniM3f_x6tnH4gu4arn6qXenGZ" width="300" height="200"/>
+<img src="https://drive.google.com/uc?export=view&id=10P0UfuGniM3f_x6tnH4gu4arn6qXenGZ" width="600" height="400"/>
 
 
 NOTE: Google Sheets before Nov. 2021 may have a different menu arrangement from the screenshot below. In such cases, you can find the Apps Script Editor by selecting Tools --> Script Editor. 
